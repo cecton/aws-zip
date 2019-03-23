@@ -28,3 +28,12 @@ Exactly similar to the `zip -r` command but with a few quirks:
      *  Directories: 755
      *  Executable files: 755
      *  Not executable files: 644
+
+Installation in CI environment
+------------------------------
+
+```
+curl -sSL https://github.com/cecton/aws-zip/releases/download/v0.1.0/aws-zip-linux-x86_64-static \
+    > /usr/local/bin/aws-zip
+chmod +x /usr/local/bin/aws-zip
+```
