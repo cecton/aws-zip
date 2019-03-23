@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/cecton/aws-zip.svg?branch=master)](https://travis-ci.org/cecton/aws-zip)
 [![Latest Version](https://img.shields.io/crates/v/aws-zip.svg)](https://crates.io/crates/aws-zip)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
-[![Docs.rs](https://docs.rs/aws-zip/badge.svg)](https://docs.rs/aws-zip)
 [![LOC](https://tokei.rs/b1/github/cecton/aws-zip)](https://github.com/cecton/aws-zip)
 [![Dependency Status](https://deps.rs/repo/github/cecton/aws-zip/status.svg)](https://deps.rs/repo/github/cecton/aws-zip)
 

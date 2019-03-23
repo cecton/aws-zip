@@ -13,5 +13,4 @@ script:
       rustfmt --check **/*.rs &&
       cargo clippy --all-targets --all-features -- -D warnings &&
       cargo build &&
-      cargo test &&
-      cargo doc
+      cargo test

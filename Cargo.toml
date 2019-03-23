@@ -7,7 +7,6 @@ edition = "2018"
 description = "Zip command that ignores modification date and always produce the same zip. Can also compress to bzip2. Statically linked binary."
 repository = "https://github.com/cecton/aws-zip"
 homepage = "https://github.com/cecton/aws-zip"
-documentation = "https://docs.rs/aws-zip"
 readme = "README.md"
 keywords = ["aws", "zip", "bzip2", "hashable"]
 categories = ["command-line-utilities"]

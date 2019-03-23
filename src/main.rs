@@ -16,7 +16,7 @@ use zip::{DateTime, ZipWriter};
 
 arg_enum! {
     #[derive(Debug)]
-    pub enum Compression {
+    enum Compression {
         Store,
         Deflate,
         BZip2
@@ -25,10 +25,10 @@ arg_enum! {
 
 #[derive(StructOpt, Debug)]
 #[structopt()]
-pub struct Opt {
+struct Opt {
     /// force all file permission
     #[structopt(short = "m", long = "mode")]
-    pub mode: Option<u32>,
+    mode: Option<u32>,
 
     /// compression method
     #[structopt(
@@ -40,7 +40,7 @@ pub struct Opt {
             case_insensitive = "true"
         )
     )]
-    pub compression: Compression,
+    compression: Compression,
 
     /// Target ZIP file will be overwritten
     #[structopt(name = "ZIPFILE", parse(from_os_str))]
