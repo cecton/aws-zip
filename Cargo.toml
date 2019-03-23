@@ -1,0 +1,25 @@
+[package]
+name = "aws-zip"
+version = "0.1.0"
+authors = ["Cecile Tonglet <cecile.tonglet@cecton.com>"]
+license = "MIT"
+edition = "2018"
+description = "Zip command that ignores modification date and always produce the same zip. Can also compress to bzip2. Statically linked binary."
+repository = "https://github.com/cecton/aws-zip"
+homepage = "https://github.com/cecton/aws-zip"
+documentation = "https://docs.rs/aws-zip"
+readme = "README.md"
+keywords = ["aws", "zip", "bzip2", "hashable"]
+categories = ["command-line-utilities"]
+
+[badges]
+travis-ci = { repository = "cecton/aws-zip" }
+is-it-maintained-issue-resolution = { repository = "cecton/aws-zip" }
+is-it-maintained-open-issues = { repository = "cecton/aws-zip" }
+maintenance = { status = "actively-developed" }
+
+[dependencies]
+zip = { version = "0.5", default-features = false, features = [ "bzip2", "deflate" ] }
+walkdir = "2.2"
+clap = "2.32"
+structopt = "0.2"
