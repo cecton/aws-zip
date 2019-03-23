@@ -55,7 +55,7 @@ fn main() {
     let opt = Opt::from_args();
     std::process::exit(match run(opt) {
         Ok(0) => 0,
-        Ok(errors) => errors,
+        Ok(_) => 1,
         Err(err) => {
             eprintln!("{}", err);
             1
@@ -63,10 +63,9 @@ fn main() {
     })
 }
 
-fn run(opt: Opt) -> Result<i32, std::io::Error> {
+fn run(opt: Opt) -> Result<u64, std::io::Error> {
     use Compression::*;
 
-    let mut errors = 0;
     let method = match opt.compression {
         Store => zip::CompressionMethod::Stored,
         Deflate => zip::CompressionMethod::Deflated,
@@ -78,34 +77,36 @@ fn run(opt: Opt) -> Result<i32, std::io::Error> {
         .compression_method(method)
         .last_modified_time(DateTime::from_date_and_time(1980, 1, 1, 0, 0, 0).unwrap());
 
-    for path in opt.files {
-        let walkdir = WalkDir::new(path);
-        let it = walkdir.into_iter();
-        for entry in it {
-            match entry {
-                Err(err) => {
-                    eprintln!("{}", err);
-                    errors += 1
-                }
-                Ok(entry) => {
-                    let path = entry.path();
+    let (mut files, errors): (Vec<_>, Vec<_>) = opt
+        .files
+        .iter()
+        .map(|x| WalkDir::new(x).into_iter())
+        .flatten()
+        .partition(|x| x.is_ok());
+    files.sort_by(|a, b| {
+        a.as_ref()
+            .unwrap()
+            .path()
+            .partial_cmp(b.as_ref().unwrap().path())
+            .unwrap()
+    });
+    for path in files.into_iter().map(|x| x.unwrap().into_path()) {
+        if path.is_file() {
+            let metadata = path.metadata().unwrap();
+            let mode = metadata.permissions().mode();
+            let options = options.unix_permissions(if mode & 0o111 != 0 { 0o755 } else { 0o644 });
 
-                    if path.is_file() {
-                        let metadata = path.metadata().unwrap();
-                        let mode = metadata.permissions().mode();
-                        let options =
-                            options.unix_permissions(if mode & 0o111 != 0 { 0o755 } else { 0o644 });
+            zip.start_file(path.to_str().unwrap(), options)?;
+            zip.write_all(std::fs::read(&path)?.as_slice())?;
 
-                        zip.start_file(path.to_str().unwrap(), options)?;
-                        zip.write_all(std::fs::read(&path)?.as_slice())?;
-
-                        println!("{}", path.display());
-                    }
-                }
-            }
+            println!("{}", path.display());
         }
     }
     zip.finish()?;
 
-    Ok(errors)
+    for err in errors.iter() {
+        eprintln!("{}", err.as_ref().unwrap_err());
+    }
+
+    Ok(errors.len() as u64)
 }
