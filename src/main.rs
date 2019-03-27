@@ -95,11 +95,12 @@ fn run(opt: Opt) -> Result<u64, std::io::Error> {
             let metadata = path.metadata().unwrap();
             let mode = metadata.permissions().mode();
             let options = options.unix_permissions(if mode & 0o111 != 0 { 0o755 } else { 0o644 });
+            let stripped_path = path.strip_prefix("./").unwrap_or(&path);
 
-            zip.start_file(path.to_str().unwrap(), options)?;
+            zip.start_file(stripped_path.to_str().unwrap(), options)?;
             zip.write_all(std::fs::read(&path)?.as_slice())?;
 
-            println!("{}", path.display());
+            println!("{}", stripped_path.display());
         }
     }
     zip.finish()?;
