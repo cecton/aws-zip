@@ -33,7 +33,7 @@ Installation in CI environment
 ------------------------------
 
 ```
-curl -sSL https://github.com/cecton/aws-zip/releases/download/v0.1.1/aws-zip-linux-x86_64-static \
+curl -sSL https://github.com/cecton/aws-zip/releases/download/v0.1.2/aws-zip-linux-x86_64-static \
     > /usr/local/bin/aws-zip
 chmod +x /usr/local/bin/aws-zip
 ```
